@@ -1,0 +1,14 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#8cae87"/>
+      <stop offset="100%" stop-color="#203b2b"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#bg)"/>
+  <path d="M0 310 L130 130 L230 250 L350 80 L490 230 L620 110 L800 300 L800 500 L0 500 Z" fill="#45634a"/>
+  <path d="M100 500 Q130 180 400 110 Q650 180 700 500 Z" fill="#18261e"/>
+  <path d="M235 500 Q270 290 400 230 Q535 290 565 500 Z" fill="#090e0b"/>
+  <path d="M0 400 Q200 340 350 410 T800 390 L800 500 L0 500 Z" fill="#263c2b"/>
+  <text x="400" y="455" fill="#ffffff" font-size="32" text-anchor="middle" font-family="Arial">Gupteswar Cave</text>
+</svg>
