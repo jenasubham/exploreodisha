@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice">
+<defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#74a1bd"/><stop offset=".62" stop-color="#2a6f9a"/><stop offset="1" stop-color="#1d3a5a"/></linearGradient>
+<radialGradient id="s"><stop offset="0" stop-color="#fff6d6"/><stop offset="1" stop-color="#ffd27a" stop-opacity="0"/></radialGradient></defs>
+<rect width="800" height="500" fill="url(#g)"/>
+<circle cx="700" cy="70" r="0.24" fill="url(#s)" opacity=".7"/><circle cx="700" cy="70" r="0.1" fill="#fff3c9"/>
+<g transform="translate(400 270)"><path d="M0 -170Q90 -140 150 -150V10Q150 110 0 175Q-150 110 -150 10V-150Q-90 -140 0 -170Z" fill="#f6e3b0" stroke="#3b2417" stroke-width="7"/>
+<path d="M0 -140Q76 -118 124 -126V8Q124 92 0 146Q-124 92 -124 8V-126Q-76 -118 0 -140Z" fill="#1b6f8a"/>
+<path d="M-62 4L-18 52L68 -48" fill="none" stroke="#fff6d6" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/></g>
+<path transform="translate(130 150) scale(2.4)" d="M0 -12L3.5 -3.7L12.5 -3.2L5.7 2.6L7.8 11.4L0 6.6L-7.8 11.4L-5.7 2.6L-12.5 -3.2L-3.5 -3.7Z" fill="#f2c45a"/><path transform="translate(680 170) scale(2)" d="M0 -12L3.5 -3.7L12.5 -3.2L5.7 2.6L7.8 11.4L0 6.6L-7.8 11.4L-5.7 2.6L-12.5 -3.2L-3.5 -3.7Z" fill="#f2c45a"/><path transform="translate(90 330) scale(1.5)" d="M0 -12L3.5 -3.7L12.5 -3.2L5.7 2.6L7.8 11.4L0 6.6L-7.8 11.4L-5.7 2.6L-12.5 -3.2L-3.5 -3.7Z" fill="#f2c45a"/><path transform="translate(720 340) scale(2.2)" d="M0 -12L3.5 -3.7L12.5 -3.2L5.7 2.6L7.8 11.4L0 6.6L-7.8 11.4L-5.7 2.6L-12.5 -3.2L-3.5 -3.7Z" fill="#f2c45a"/><path transform="translate(210 70) scale(1.4)" d="M0 -12L3.5 -3.7L12.5 -3.2L5.7 2.6L7.8 11.4L0 6.6L-7.8 11.4L-5.7 2.6L-12.5 -3.2L-3.5 -3.7Z" fill="#f2c45a"/><path transform="translate(600 60) scale(1.6)" d="M0 -12L3.5 -3.7L12.5 -3.2L5.7 2.6L7.8 11.4L0 6.6L-7.8 11.4L-5.7 2.6L-12.5 -3.2L-3.5 -3.7Z" fill="#f2c45a"/></svg>
