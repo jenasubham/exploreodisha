@@ -2,53 +2,57 @@
 
 import { useRef, useState } from "react";
 
-export default function Home() {
+export default function MusicPlayer() {
   const audioRef = useRef(null);
   const [playing, setPlaying] = useState(false);
 
-  async function playSong() {
+  const toggleMusic = async () => {
     const audio = audioRef.current;
+    if (!audio) return;
 
     if (playing) {
       audio.pause();
-      return;
+      setPlaying(false);
+    } else {
+      try {
+        await audio.play();
+        setPlaying(true);
+      } catch (error) {
+        console.error("Music error:", error);
+      }
     }
-
-    try {
-      await audio.play();
-    } catch (error) {
-      console.error("Audio error:", error);
-      alert("Audio failed: " + error.message);
-    }
-  }
+  };
 
   return (
-    <main>
+    <>
       <audio
         ref={audioRef}
         src="/music/nature.mp3"
         loop
-        onPlay={() => setPlaying(true)}
-        onPause={() => setPlaying(false)}
+        onEnded={() => setPlaying(false)}
       />
 
       <button
-        onClick={playSong}
+        onClick={toggleMusic}
+        aria-label="Toggle background music"
         style={{
           position: "fixed",
-          right: 25,
-          bottom: 25,
-          padding: "15px 25px",
-          borderRadius: "50px",
-          background: "#064e3b",
+          bottom: "25px",
+          right: "25px",
+          zIndex: 99999,
+          background: "rgba(20, 60, 40, 0.95)",
           color: "white",
-          border: "none",
+          padding: "14px 22px",
+          borderRadius: "50px",
+          border: "1px solid rgba(255,255,255,0.2)",
+          boxShadow: "0 5px 20px rgba(0,0,0,0.25)",
           cursor: "pointer",
-          zIndex: 9999,
+          fontSize: "15px",
+          fontWeight: "600",
         }}
       >
-        {playing ? "⏸ Pause Music" : "♫ Play Music"}
+        {playing ? "🔊 Pause Nature Music" : "🎵 Play Nature Music"}
       </button>
-    </main>
+    </>
   );
 }

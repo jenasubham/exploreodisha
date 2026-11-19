@@ -1,6 +1,8 @@
+
 import { Fraunces, Hanken_Grotesk } from "next/font/google";
 import { site } from "@/content/site";
 import "./globals.css";
+import MusicPlayer from "../components/MusicPlayer";
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -30,7 +32,10 @@ export const viewport = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${fraunces.variable} ${hanken.variable}`}>
-      <body>{children}</body>
+      <body>
+        {children}
+        <MusicPlayer />
+      </body>
     </html>
   );
 }
