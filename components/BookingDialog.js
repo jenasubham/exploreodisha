@@ -4,8 +4,7 @@ import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { destinations } from "@/content/destinations";
 import { packages } from "@/content/packages";
 import { site } from "@/content/site";
-import { buildWhatsAppUrl, clampTravellers, todayLocal, validateEnquiry } from "@/lib/booking";
-import { fill } from "@/lib/text";
+import { buildWhatsAppUrl, todayLocal, validateEnquiry } from "@/lib/booking";
 
 const BookingContext = createContext(null);
 const t = site.booking;
@@ -21,12 +20,11 @@ const emptyForm = {
   requirements: "",
 };
 
-const emptyPassenger = { name: "", age: "" };
+const star = <span style={{ color: "#e5645a" }}> *</span>;
 
 export function BookingProvider({ children }) {
   const dialogRef = useRef(null);
   const [form, setForm] = useState(emptyForm);
-  const [passengers, setPassengers] = useState([emptyPassenger, emptyPassenger]);
   const [errors, setErrors] = useState({});
   const [waUrl, setWaUrl] = useState("");
   const [minDate, setMinDate] = useState("");
@@ -51,27 +49,15 @@ export function BookingProvider({ children }) {
     return (e) => setForm((f) => ({ ...f, [key]: e.target.value }));
   }
 
-  function changeTravellers(e) {
-    const count = clampTravellers(e.target.value);
-    setForm((f) => ({ ...f, travellers: e.target.value }));
-    setPassengers((list) =>
-      Array.from({ length: count }, (_, i) => list[i] ?? emptyPassenger)
-    );
-  }
-
-  function setPassenger(index, key, value) {
-    setPassengers((list) =>
-      list.map((p, i) => (i === index ? { ...p, [key]: value } : p))
-    );
-  }
-
   function handleSubmit(e) {
     e.preventDefault();
-    const found = validateEnquiry(form, passengers);
+
+    const found = validateEnquiry(form);
     setErrors(found);
+
     if (Object.keys(found).length) return;
 
-    const url = buildWhatsAppUrl(site.whatsappNumber, form, passengers);
+    const url = buildWhatsAppUrl(site.whatsappNumber, form);
     setWaUrl(url);
     window.open(url, "_blank", "noopener");
   }
@@ -83,6 +69,7 @@ export function BookingProvider({ children }) {
       <dialog
         ref={dialogRef}
         className="dlg"
+        style={{ maxHeight: "90vh", overflowY: "auto", overscrollBehavior: "contain" }}
         onClick={(e) => {
           // A click on the backdrop lands on the dialog itself.
           if (e.target === dialogRef.current) close();
@@ -93,33 +80,61 @@ export function BookingProvider({ children }) {
           <p className="muted-note">{t.note}</p>
 
           <label>
-            {t.nameLabel}
+            <span>
+              {t.nameLabel}
+              {star}
+            </span>
             <input
               value={form.name}
-              onChange={setField("name")}
+              onChange={(e) =>
+                setForm((f) => ({
+                  ...f,
+                  name: e.target.value.replace(/[^\p{L}\s.'-]/gu, ""),
+                }))
+              }
               autoComplete="name"
+              aria-required="true"
             />
             <span className="err">{errors.name}</span>
           </label>
 
           <div className="two">
             <label>
-              {t.phoneLabel}
+              <span>
+                {t.phoneLabel}
+                {star}
+              </span>
               <input
                 type="tel"
+                inputMode="numeric"
+                maxLength={10}
                 value={form.phone}
-                onChange={setField("phone")}
+                onChange={(e) =>
+                  setForm((f) => ({
+                    ...f,
+                    phone: e.target.value.replace(/\D/g, ""),
+                  }))
+                }
                 autoComplete="tel"
+                aria-required="true"
               />
               <span className="err">{errors.phone}</span>
             </label>
+
             <label>
               {t.emailLabel}
               <input
                 type="email"
                 value={form.email}
-                onChange={setField("email")}
+                onChange={(e) =>
+                  setForm((f) => ({
+                    ...f,
+                    email: e.target.value.toLowerCase().replace(/\s/g, ""),
+                  }))
+                }
                 autoComplete="email"
+                autoCapitalize="none"
+                spellCheck={false}
               />
               <span className="err">{errors.email}</span>
             </label>
@@ -128,13 +143,17 @@ export function BookingProvider({ children }) {
           <div className="two">
             <label>
               {t.destinationLabel}
-              <select value={form.destination} onChange={setField("destination")}>
+              <select
+                value={form.destination}
+                onChange={setField("destination")}
+              >
                 <option value="">{t.destinationNone}</option>
                 {destinations.map((d) => (
                   <option key={d.name}>{d.name}</option>
                 ))}
               </select>
             </label>
+
             <label>
               {t.packageLabel}
               <select value={form.pkg} onChange={setField("pkg")}>
@@ -156,6 +175,7 @@ export function BookingProvider({ children }) {
                 onChange={setField("date")}
               />
             </label>
+
             <label>
               {t.travellersLabel}
               <input
@@ -163,34 +183,10 @@ export function BookingProvider({ children }) {
                 min="1"
                 max={t.maxTravellers}
                 value={form.travellers}
-                onChange={changeTravellers}
+                onChange={setField("travellers")}
+                onWheel={(e) => e.currentTarget.blur()}
               />
             </label>
-          </div>
-
-          <div className="pax">
-            {passengers.map((p, i) => (
-              <div className="two" key={i}>
-                <label>
-                  {fill(t.passengerName, { number: i + 1 })}
-                  <input
-                    value={p.name}
-                    onChange={(e) => setPassenger(i, "name", e.target.value)}
-                  />
-                </label>
-                <label>
-                  {t.passengerAge}
-                  <input
-                    type="number"
-                    min="0"
-                    max="120"
-                    value={p.age}
-                    onChange={(e) => setPassenger(i, "age", e.target.value)}
-                  />
-                </label>
-              </div>
-            ))}
-            <span className="err">{errors.passengers}</span>
           </div>
 
           <label>
@@ -206,6 +202,7 @@ export function BookingProvider({ children }) {
             <button type="submit" className="btn">
               {t.submitButton}
             </button>
+
             <button type="button" className="btn line" onClick={close}>
               {t.closeButton}
             </button>
@@ -228,6 +225,10 @@ export function BookingProvider({ children }) {
 
 export function useBooking() {
   const ctx = useContext(BookingContext);
-  if (!ctx) throw new Error("useBooking must be used inside BookingProvider");
+
+  if (!ctx) {
+    throw new Error("useBooking must be used inside BookingProvider");
+  }
+
   return ctx;
 }
